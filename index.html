@@ -71,12 +71,13 @@
         box-shadow: 0 -4px 16px rgba(0,0,0,0.4); z-index: 9999;
         border-top: 1px solid var(--base01); padding: 10px 16px;
     }
-    .dock-summary { display: flex; justify-content: space-between; align-items: center; }
+    .dock-summary { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
     .dock-summary text { font-size: 14px; font-weight: bold; color: var(--base2); }
-    .dock-btn-group { display: flex; gap: 8px; }
+    .dock-btn-group { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; justify-content: flex-end; min-width: 0; }
     .dock-toggle-btn, .layout-toggle-btn {
-        background: var(--blue); color: white; border: none; padding: 8px 14px;
-        border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;
+        background: var(--blue); color: white; border: none; padding: 7px 10px;
+        border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;
+        flex-shrink: 1; min-width: 0; white-space: nowrap;
     }
     .layout-toggle-btn { background: var(--magenta); }
     .dock-columns-btn  { background: var(--cyan); }
@@ -2150,6 +2151,9 @@
         const isOpen  = openEl.classList.contains('open');
         if (closeEl) closeEl.classList.remove('open');
         openEl.classList.toggle('open', !isOpen);
+        // Resize body padding to match dock height
+        const dock = document.querySelector('.mobile-dock');
+        if (dock) document.body.style.paddingBottom = dock.offsetHeight + 'px';
     };
 
     window.toggleLayout = function() {
@@ -2217,6 +2221,12 @@
     })();
 
     applyFilters();
+
+    // Sync initial body padding to dock height
+    (function syncDockPadding() {
+        const dock = document.querySelector('.mobile-dock');
+        if (dock) document.body.style.paddingBottom = dock.offsetHeight + 'px';
+    })();
 </script>
 <div id="rym-lightbox" onclick="this.classList.remove('open')">
     <img id="rym-lightbox-img" src="" alt="Full resolution cover">
